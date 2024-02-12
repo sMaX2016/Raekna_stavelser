@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <title>Antal stavelser per ord</title>
+</head>
+<body>
+    <form id="wordCountForm">
+        <label for="textInput">Skriv in din text:</label>
+        <textarea id="textInput" rows="4" cols="50"></textarea>
+        <br>
+        <button type="button" onclick="calculateWordSyllables()">Beräkna</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        function calculateWordSyllables() {
+            // Hämta texten från användaren
+            var userText = document.getElementById("textInput").value;
+
+            // Skicka texten till servern för beräkning
+            fetch('/calculate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: userText }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Visa resultatet på webbsidan
+                document.getElementById("result").innerHTML = "Antal stavelser per ord: " + data.syllablesPerWord;
+            });
+        }
+    </script>
+</body>
+</html>
